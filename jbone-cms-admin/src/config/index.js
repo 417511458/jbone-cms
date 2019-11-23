@@ -17,19 +17,21 @@ export default {
    * @description api请求基础路径
    */
   baseUrl: {
-    dev: 'http://jbone-sm-gateway.majunwei.com:10005',
-    pro: 'http://jbone-sm-gateway.majunwei.com:10005'
+    dev: 'http://gateway.local.jbone.cn',
+    pro: 'http://gateway.local.jbone.cn'
   },
   sso: {
     dev: {
-      OAUTH_REDIRECT_URI : 'http://jbone-cms-admin.majunwei.com:50002/',
+      OAUTH_REDIRECT_URI : 'http://cmsadmin.local.jbone.cn',
       SSO_BASE_URL : 'http://sso.local.jbone.cn/',
+      DOMAIN_BASE_URL : 'jbone.cn',
       OAUTH_CLIENT_ID : 'cmsadmin',
       OAUTH_CLIENT_SECRET : 'cmsadmin'
     },
     pro: {
-      OAUTH_REDIRECT_URI : 'http://jbone-cms-admin.majunwei.com:50002/',
+      OAUTH_REDIRECT_URI : 'http://cmsadmin.local.jbone.cn',
       SSO_BASE_URL : 'http://sso.local.jbone.cn/',
+      DOMAIN_BASE_URL : 'jbone.cn',
       OAUTH_CLIENT_ID : 'cmsadmin',
       OAUTH_CLIENT_SECRET : 'cmsadmin'
     }

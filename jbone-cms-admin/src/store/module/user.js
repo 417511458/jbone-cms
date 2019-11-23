@@ -8,7 +8,11 @@ import {
   restoreTrash,
   getUnreadCount
 } from '@/api/user'
+
+
 import { setToken, getToken,setUserId } from '@/libs/util'
+
+import { sendGetProfile } from '@/libs/auth'
 
 export default {
   state: {
@@ -93,21 +97,22 @@ export default {
       return new Promise((resolve, reject) => {
 
         try {
-          getUserInfo(state.token).then(res => {
-            console.log(res);
-            const result = res.data;
-            if(result.success){
-              const data = result.data;
-              commit('setAvatar', data.baseInfo.avatar);
-              commit('setUserName', data.baseInfo.realname);
-              commit('setUserId', data.baseInfo.id);
+          sendGetProfile().then(res => {
+            //请求失败，重新登录
+            if(res.error){
+              reject(res.error);
+            }else{
+              console.log(res);
+              let userInfo = JSON.parse(res.data.attributes.userInfo)
+              commit('setAvatar', userInfo.baseInfo.avatar);
+              commit('setUserName', userInfo.baseInfo.realname);
+              commit('setUserId', userInfo.baseInfo.id);
               commit('setAccess', '');
               commit('setHasGetInfo', true);
-              setUserId(data.baseInfo.id);
-              resolve(data);
-            }else{
-              reject(result.status.message);
+              setUserId(userInfo.baseInfo.id);
+              resolve(userInfo);
             }
+
 
           }).catch(err => {
             reject(err);

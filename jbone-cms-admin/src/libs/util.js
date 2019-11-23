@@ -10,8 +10,32 @@ export const USER_ID_KEY = 'j_u_id';
 
 export const RT_TOKEN_KEY = 'j_r_id';
 
+export const USER_NAME = 'j_u_name';
+
+export const REAL_NAME= 'j_r_name';
+
+export const BASE_DOMAIN = 'jbone.cn';
+
+export const setRealName = (uid) => {
+  Cookies.set(REAL_NAME, uid, {expires: cookieExpires || 1,domain: BASE_DOMAIN});
+}
+export const getRealName = () => {
+  const uid = Cookies.get(REAL_NAME);
+  if (uid) return uid;
+  else return 0;
+}
+
+export const setUserName = (uid) => {
+  Cookies.set(USER_NAME, uid, {expires: cookieExpires || 1,domain: BASE_DOMAIN});
+}
+export const getUserName = () => {
+  const uid = Cookies.get(USER_NAME);
+  if (uid) return uid;
+  else return 0;
+}
+
 export const setUserId = (uid) => {
-  Cookies.set(USER_ID_KEY, uid, {expires: cookieExpires || 1});
+  Cookies.set(USER_ID_KEY, uid, {expires: cookieExpires || 1,domain: BASE_DOMAIN});
 }
 export const getUserId = () => {
   const uid = Cookies.get(USER_ID_KEY);
@@ -20,15 +44,16 @@ export const getUserId = () => {
 }
 
 export const setToken = (token) => {
-  Cookies.set(TOKEN_KEY, token, {expires: cookieExpires || 1});
+  Cookies.set(TOKEN_KEY, token, {expires: cookieExpires || 1,domain: BASE_DOMAIN});
 }
 
 export const clearToken = () => {
-  Cookies.set(TOKEN_KEY, '', -1);
+  // Cookies.set(TOKEN_KEY, '', -1);
+  Cookies.remove(TOKEN_KEY, {domain: BASE_DOMAIN});
 }
 
 export const getToken = () => {
-  const token = Cookies.get(TOKEN_KEY);
+  const token = Cookies.get(TOKEN_KEY,{domain: BASE_DOMAIN});
   if (token) return token;
   else return false
 }
@@ -47,6 +72,9 @@ export const clearRToken = () => {
   Cookies.set(RT_TOKEN_KEY, '', -1);
 }
 
+export const getUrlKey = (name) => {
+  return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ""])[1].replace(/\+/g, '%20')) || null
+}
 export const hasChild = (item) => {
   return item.children && item.children.length !== 0
 }

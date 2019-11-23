@@ -13,6 +13,7 @@ import cn.jbone.cms.portal.service.*;
 import cn.jbone.common.rpc.Result;
 import cn.jbone.errors.Jbone404Exception;
 import cn.jbone.sso.client.utils.SessionUtil;
+import cn.jbone.sso.common.domain.UserInfo;
 import cn.jbone.system.common.UserResponseDO;
 import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
@@ -81,14 +82,14 @@ public class ArticleController {
     @ResponseBody
     public Result index(ModelMap modelMap, CommentDO commentDO, HttpServletRequest request){
         try {
-            UserResponseDO userResponseDO = SessionUtil.getCurrentUser();
-            if(userResponseDO == null){
+            UserInfo userInfo = SessionUtil.getCurrentUser();
+            if(userInfo == null){
                 return Result.wrap500Error("请先登录");
             }
             commentDO.setStatus(StatusEnum.PUBLISH);
             commentDO.setPid(0l);
             commentDO.setIp(request.getRemoteHost());
-            commentDO.setCreator(userResponseDO.getBaseInfo().getId());
+            commentDO.setCreator(userInfo.getBaseInfo().getId());
             if(commentService.addOrUpdate(commentDO)){
                 return Result.wrapSuccess();
             }else{

@@ -1,4 +1,4 @@
-import { setToken, getToken,clearToken,setRToken, getRToken,clearRToken, canTurnTo, setTitle } from '@/libs/util'
+import { setToken, getToken,clearToken,setRToken, getRToken,clearRToken, canTurnTo, setTitle,setUserId,setUserName,setRealName } from '@/libs/util'
 import axios from '@/libs/api.request'
 import config from '@/config'
 
@@ -15,6 +15,7 @@ const OAUTH_GRANT_TYPE_REFRESH_TOKEN = 'refresh_token'
 const SSO_LOGOUT = SSO_BASE_URL + 'logout'
 const SSO_OAUTH_AUTHOIZE_URL = SSO_BASE_URL + 'oauth2.0/authorize?response_type=' + OAUTH_RESPONSE_CODE + '&client_id=' + OAUTH_CLIENT_ID + '&redirect_uri=' + OAUTH_REDIRECT_URI
 const SSO_OAUTH_ACCESSTOKEN_URL = 'oauth2.0/accessToken'
+const SSO_OAUTH_PROFILE = 'oauth2.0/profile?access_token='
 
 
 export const handleAuth = (code, callback) => {
@@ -62,25 +63,49 @@ export const requestToken = (code, callback) => {
     let accessToken = res.data.access_token
     if(accessToken){
       setToken(accessToken)
+      getProfile(accessToken)
       //获取到token，调用路由钩子函数回调函数
       callback()
     }else{
       toLogin();
     }
-    // let refreshToken = res.data.refresh_token
-    // let timeout  = res.data.expires_in
-    // if(accessToken && refreshToken){
-    //   setToken(accessToken)
-    //   setRToken(refreshToken)
-    // }else{
-    //   toLogin();
-    // }
-
-
   }).catch(function (error) {
+    debugger
     console.info(error)
     //获取accesstoken失败，表示code过期，需重新登录
     toLogin();
+  });
+}
+
+export const getProfile = (accessToken) => {
+  if(!accessToken){
+    return
+  }
+  axios.requestByBaseUrl(SSO_BASE_URL,{
+    url: SSO_OAUTH_PROFILE + accessToken,
+    method: 'get'
+  }).then(function (res) {
+    //请求失败，重新登录
+    if(res.error){
+      alert(res.error)
+      toLogin();
+    }
+    let userInfo = JSON.parse(res.data.attributes.userInfo)
+    setUserId(userInfo.baseInfo.id)
+    setRealName(userInfo.baseInfo.realname)
+    setUserName(userInfo.baseInfo.username)
+  }).catch(function (error) {
+    debugger
+    console.info(error)
+    //获取用户信息失败，认为登录失败，重新登录
+    toLogin();
+  });
+}
+
+export const sendGetProfile = () => {
+  return axios.requestByBaseUrl(SSO_BASE_URL,{
+    url: SSO_OAUTH_PROFILE + getToken(),
+    method: 'get'
   });
 }
 

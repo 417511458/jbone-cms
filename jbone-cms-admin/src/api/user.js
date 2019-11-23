@@ -3,8 +3,8 @@ import axios from '@/libs/api.request'
 export const getUserInfo = () => {
   return axios.request({
     url: 'system/getCurrentUser',
-    method: 'get'
-  })
+    method: 'get',
+  },{withCredentials: true})
 }
 
 export const searchUsers = (condition) => {

@@ -31,7 +31,7 @@ class HttpRequest {
       timeout: 5000,
       withCredentials: true,
       headers: {
-        'Access-Control-Allow-Origin': 'http://jbone-cms-admin-vue.majunwei.com:8080',
+        'Access-Control-Allow-Origin': 'http://cmsadmin.local.jbone.cn/',
         'Access-Control-Allow-Credentials': true,
         'Content-Type': 'application/x-www-form-urlencoded',
         common:{'Accept' :'multipart/form-data,application/json,text/plain,*/*'},
