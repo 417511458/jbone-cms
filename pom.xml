@@ -25,7 +25,7 @@
         <shiro.version>1.4.0</shiro.version>
         <jbone.version>1.0.0</jbone.version>
         <jbone.system.version>1.0.0-SNAPSHOT</jbone.system.version>
-        <jbone.sso.version>1.0.0-SNAPSHOT</jbone.sso.version>
+        <jbone.sso.version>1.0.0</jbone.sso.version>
         <jackson.version>2.9.7</jackson.version>
         <commons-io.version>2.5</commons-io.version>
         <commons-text.version>1.1</commons-text.version>
